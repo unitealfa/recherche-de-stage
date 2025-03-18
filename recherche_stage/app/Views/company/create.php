@@ -4,7 +4,7 @@
 <?php if (isset($error)): ?>
   <p style="color:red;"><?= $error; ?></p>
 <?php endif; ?>
-<form method="post" action="index.php?controller=company&action=create">
+<form method="post" action="index.php?controller=company&action=create" enctype="multipart/form-data">
   <label>Nom :</label>
   <input type="text" name="name" required>
   <br>
@@ -19,6 +19,10 @@
   
   <label>Téléphone :</label>
   <input type="text" name="phone_contact">
+  <br>
+  
+  <label>Image de profil :</label>
+  <input type="file" name="profile_picture">
   <br>
   
   <button type="submit">Créer</button>

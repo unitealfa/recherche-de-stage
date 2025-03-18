@@ -1,25 +1,33 @@
 <?php include "app/Views/layout/header.php"; ?>
+
 <h2>Inscription</h2>
-<?php if(isset($error)): ?>
-  <p style="color:red;"><?= $error; ?></p>
+
+<?php if (isset($error)): ?>
+  <p style="color:red;"><?= htmlspecialchars($error) ?></p>
 <?php endif; ?>
+
 <form method="post" action="index.php?controller=auth&action=register">
-  <label>Prénom :</label>
-  <input type="text" name="first_name" required>
-  <br>
-  <label>Nom :</label>
-  <input type="text" name="last_name" required>
-  <br>
-  <label>Email :</label>
-  <input type="email" name="email" required>
-  <br>
-  <label>Mot de passe :</label>
-  <input type="password" name="password" required>
-  <br>
-  <label>Confirmer le mot de passe :</label>
-  <input type="password" name="confirm_password" required>
-  <br>
+  <label for="first_name">Prénom :</label>
+  <input type="text" name="first_name" id="first_name" required>
+  <br><br>
+  
+  <label for="last_name">Nom :</label>
+  <input type="text" name="last_name" id="last_name" required>
+  <br><br>
+  
+  <label for="email">Email :</label>
+  <input type="email" name="email" id="email" required>
+  <br><br>
+  
+  <label for="password">Mot de passe :</label>
+  <input type="password" name="password" id="password" required>
+  <br><br>
+  
+  <label for="confirm_password">Confirmer le mot de passe :</label>
+  <input type="password" name="confirm_password" id="confirm_password" required>
+  <br><br>
+  
   <button type="submit">S'inscrire</button>
 </form>
-<p>Déjà inscrit ? <a href="index.php?controller=auth&action=login">Connexion</a></p>
+
 <?php include "app/Views/layout/footer.php"; ?>

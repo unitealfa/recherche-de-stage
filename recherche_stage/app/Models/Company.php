@@ -7,9 +7,10 @@ class Company {
         $this->db = $db;
     }
     
-    public function create($name, $description, $email_contact, $phone_contact) {
-        $stmt = $this->db->prepare("INSERT INTO companies (name, description, email_contact, phone_contact) VALUES (?, ?, ?, ?)");
-        return $stmt->execute([$name, $description, $email_contact, $phone_contact]);
+    // Modification de create() pour inclure la pfp
+    public function create($name, $description, $email_contact, $phone_contact, $profile_picture) {
+        $stmt = $this->db->prepare("INSERT INTO companies (name, description, email_contact, phone_contact, profile_picture) VALUES (?, ?, ?, ?, ?)");
+        return $stmt->execute([$name, $description, $email_contact, $phone_contact, $profile_picture]);
     }
     
     public function findById($id) {
@@ -18,13 +19,11 @@ class Company {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     
-    // Méthode existante pour récupérer toutes les entreprises
+    // Modification de getAll() pour récupérer aussi la pfp
     public function getAll() {
-        $stmt = $this->db->query("SELECT company_id, name, description, email_contact, phone_contact FROM companies");
+        $stmt = $this->db->query("SELECT company_id, name, description, email_contact, phone_contact, profile_picture FROM companies");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
-    // ... (d'autres méthodes existantes, comme create, findById, update, delete, etc.)
     
     /**
      * Met à jour la note moyenne de l'entreprise
@@ -35,13 +34,11 @@ class Company {
      * @return bool Retourne true en cas de succès.
      */
     public function updateAverageRating($company_id) {
-        // Calculer la moyenne des évaluations pour l'entreprise
         $stmt = $this->db->prepare("SELECT AVG(rating) AS avg_rating FROM evaluations WHERE company_id = ?");
         $stmt->execute([$company_id]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         $average = $result['avg_rating'] ?? 0;
         
-        // Mettre à jour la table companies avec la moyenne calculée
         $updateStmt = $this->db->prepare("UPDATE companies SET average_rating = ? WHERE company_id = ?");
         return $updateStmt->execute([$average, $company_id]);
     }
@@ -53,19 +50,19 @@ class Company {
      * @param string $name Le terme de recherche.
      * @return array Tableau associatif des entreprises triées.
      */
-   public function searchOrderByMatch($name) {
-       // La requête trie en utilisant un CASE qui renvoie 0 pour les noms contenant le terme recherché, sinon 1.
-       $sql = "SELECT company_id, name, description, email_contact, phone_contact 
-               FROM companies 
-               ORDER BY (CASE WHEN name LIKE ? THEN 0 ELSE 1 END), name ASC";
-       $stmt = $this->db->prepare($sql);
-       $stmt->execute(['%' . $name . '%']);
-       return $stmt->fetchAll(PDO::FETCH_ASSOC);
-   }
+    public function searchOrderByMatch($name) {
+        $sql = "SELECT company_id, name, description, email_contact, phone_contact, profile_picture 
+                FROM companies 
+                ORDER BY (CASE WHEN name LIKE ? THEN 0 ELSE 1 END), name ASC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['%' . $name . '%']);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
     
-    public function update($id, $name, $description, $email_contact, $phone_contact) {
-        $stmt = $this->db->prepare("UPDATE companies SET name = ?, description = ?, email_contact = ?, phone_contact = ? WHERE company_id = ?");
-        return $stmt->execute([$name, $description, $email_contact, $phone_contact, $id]);
+    // Modification de update() pour inclure la pfp
+    public function update($id, $name, $description, $email_contact, $phone_contact, $profile_picture) {
+        $stmt = $this->db->prepare("UPDATE companies SET name = ?, description = ?, email_contact = ?, phone_contact = ?, profile_picture = ? WHERE company_id = ?");
+        return $stmt->execute([$name, $description, $email_contact, $phone_contact, $profile_picture, $id]);
     }
     
     public function delete($id) {
@@ -78,11 +75,11 @@ class Company {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Recherche les entreprises dont le nom contient la chaîne passée en paramètre
+    // Modification de search() pour inclure la pfp
     public function search($name) {
-        $stmt = $this->db->prepare("SELECT company_id, name, description, email_contact, phone_contact FROM companies WHERE name LIKE ?");
+        $stmt = $this->db->prepare("SELECT company_id, name, description, email_contact, phone_contact, profile_picture FROM companies WHERE name LIKE ?");
         $stmt->execute(['%' . $name . '%']);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
 }
+?>

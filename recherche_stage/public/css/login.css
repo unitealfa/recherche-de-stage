@@ -1,0 +1,229 @@
+/* Importation de la police */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background: black;
+}
+
+.container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+
+.left-side {
+    flex: 1;
+    background: url('/public/images/login.jpg') no-repeat center center/cover;
+}
+
+.right-side {
+    flex: 1;
+    background: #111;
+    color: white;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.logo {
+    width: 80px;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-weight: 600;
+}
+
+p {
+    margin-bottom: 20px;
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+form {
+    width: 100%;
+    max-width: 300px;
+}
+
+label {
+    display: block;
+    text-align: left;
+    font-size: 14px;
+    margin: 10px 0 5px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #666;
+    border-radius: 5px;
+    background: transparent;
+    color: white;
+}
+
+.password-container {
+    position: relative;
+}
+
+.password-container input {
+    width: 100%;
+    padding-right: 35px;
+}
+
+.password-container i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.options {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin: 15px 0;
+}
+
+.options a {
+    color: #b37feb;
+    text-decoration: none;
+}
+
+.options a:hover {
+    text-decoration: underline;
+}
+.options {
+    display: flex;
+    align-items: center; /* Aligne verticalement */
+    justify-content: space-between;
+    font-size: 18px;
+    margin: 15px 0;
+}
+
+.options label {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Ajoute un petit espace entre la case et le texte */
+}
+
+.options input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+
+button {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(45deg, #9b59b6, #6a5acd);
+    border: none;
+    color: white;
+    border-radius: 5px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+/* RESPONSIVITÉ POUR LES TABLETTES & MOBILES */
+@media (max-width: 1024px) {
+    .container {
+        width: 100vw;
+        height: 100vh;
+        flex-direction: column;
+    }
+
+    .left-side {
+        height: 250px; /* Réduit la taille de l'image */
+        flex: none;
+    }
+
+    .right-side {
+        flex: none;
+        padding: 30px;
+    }
+}
+
+@media (max-width: 430px) {
+    .left-side {
+        display: none; /* Cache l'image sur petits écrans */
+    }
+
+    .right-side {
+        width: 100%;
+        padding: 50px 20px;
+        text-align: center;
+    }
+
+    form {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 20px;
+    }
+
+    input, button {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .options {
+        font-size: 12px;
+    }
+}
+/* Permet le défilement si le contenu dépasse la hauteur de l'écran */
+.right-side {
+    flex: 1;
+    background: #111;
+    color: white;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    overflow-y: auto; /* Active le scroll vertical */
+    max-height: 100vh; /* Empêche de dépasser l'écran */
+}
+/* Scrollbar modernisée */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #111; /* Fond de la barre */
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #9b59b6, #6a5acd); /* Dégradé violet */
+    border-radius: 10px;
+    transition: background 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #8e44ad, #483D8B);
+}

@@ -30,8 +30,8 @@ if (isset($_SESSION['user'])) {
 ?>
 
 <table border="1" cellspacing="0" cellpadding="5">
-<tr>
-    <th>ID</th>
+  <tr>
+    <!-- La colonne ID a été supprimée -->
     <th>Titre</th>
     <th>Entreprise</th>
     <th>Description</th>
@@ -52,7 +52,6 @@ if (isset($_SESSION['user'])) {
       }
   ?>
   <tr>
-    <td><?= htmlspecialchars($offer['offer_id'] ?? ''); ?></td>
     <td><?= htmlspecialchars($offer['title'] ?? ''); ?></td>
     <td><?= htmlspecialchars($offer['company_name'] ?? 'Entreprise inconnue'); ?></td>
     <td><?= htmlspecialchars($offer['description'] ?? 'Non renseigné'); ?></td>
@@ -71,13 +70,11 @@ if (isset($_SESSION['user'])) {
                 echo ' | <a href="index.php?controller=candidature&action=postuler&offer_id=' . htmlspecialchars($offer['offer_id'] ?? '') . '">Postuler</a>';
                 echo ' | <a href="index.php?controller=wishlist&action=add&offer_id=' . htmlspecialchars($offer['offer_id'] ?? '') . '">Ajouter à ma wishlist</a>';
             } elseif ($role === 'PILOTE') {
-                // Actions pour le pilote, par exemple uniquement "Modifier" ou "Supprimer" si nécessaire
                 echo ' | <a href="index.php?controller=offer&action=edit&id=' . htmlspecialchars($offer['offer_id'] ?? '') . '">Modifier</a>';
                 echo ' | <a href="index.php?controller=offer&action=delete&id=' . htmlspecialchars($offer['offer_id'] ?? '') . '" onclick="return confirm(\'Confirmer la suppression\');">Supprimer</a>';
             }
         }
-        ?>
-
+      ?>
     </td>
   </tr>
   <?php endforeach; ?>

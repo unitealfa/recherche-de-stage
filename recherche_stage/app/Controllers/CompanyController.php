@@ -21,8 +21,6 @@ class CompanyController extends BaseController {
         
         if (isset($_GET['search']) && !empty($_GET['search'])) {
             $search = $_GET['search'];
-            // Utilisation de la méthode qui trie par pertinence : les entreprises dont le nom correspond
-            // apparaissent en premier
             $companies = $companyModel->searchOrderByMatch($search);
         } else {
             $companies = $companyModel->getAll();
@@ -45,7 +43,6 @@ class CompanyController extends BaseController {
     
     // Créer, modifier et supprimer des entreprises (ADMIN et PILOTE uniquement)
     public function create() {
-        // Autoriser uniquement ADMIN et PILOTE
         $this->requireRole(['ADMIN', 'PILOTE']);
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -54,8 +51,25 @@ class CompanyController extends BaseController {
             $email_contact = trim($_POST['email_contact'] ?? '');
             $phone_contact = trim($_POST['phone_contact'] ?? '');
             
+            // Traitement de l'upload de l'image de profil
+            $uploadDir = "public/uploads/companies/";
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+            if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
+                $fileName = time() . "_" . basename($_FILES['profile_picture']['name']);
+                $targetFile = $uploadDir . $fileName;
+                if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $targetFile)) {
+                    $profile_picture = $fileName;
+                } else {
+                    $profile_picture = "default_pfp.png";
+                }
+            } else {
+                $profile_picture = "default_pfp.png";
+            }
+            
             $companyModel = new Company($this->db);
-            $result = $companyModel->create($name, $description, $email_contact, $phone_contact);
+            $result = $companyModel->create($name, $description, $email_contact, $phone_contact, $profile_picture);
             
             if ($result) {
                 header("Location: index.php?controller=company&action=index");
@@ -78,7 +92,24 @@ class CompanyController extends BaseController {
             $email_contact = trim($_POST['email_contact'] ?? '');
             $phone_contact = trim($_POST['phone_contact'] ?? '');
             
-            $result = $companyModel->update($id, $name, $description, $email_contact, $phone_contact);
+            // Traitement de l'upload de l'image de profil
+            $uploadDir = "public/uploads/companies/";
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+            if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
+                $fileName = time() . "_" . basename($_FILES['profile_picture']['name']);
+                $targetFile = $uploadDir . $fileName;
+                if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $targetFile)) {
+                    $profile_picture = $fileName;
+                } else {
+                    $profile_picture = $_POST['existing_profile_picture'] ?? "default_pfp.png";
+                }
+            } else {
+                $profile_picture = $_POST['existing_profile_picture'] ?? "default_pfp.png";
+            }
+            
+            $result = $companyModel->update($id, $name, $description, $email_contact, $phone_contact, $profile_picture);
             if ($result) {
                 header("Location: index.php?controller=company&action=index");
                 exit;
@@ -107,12 +138,6 @@ class CompanyController extends BaseController {
         exit;
     }
     
-    // ------------------------------
-    // Méthode : evaluate()
-    // Description : Permet à un utilisateur (ADMIN, PILOTE ou ETUDIANT) d'évaluer une entreprise.
-    // L'utilisateur ne peut évaluer qu'une seule fois ; si une évaluation existe, elle sera mise à jour.
-    // Après l'enregistrement de l'évaluation, la moyenne des évaluations de l'entreprise est recalculée.
-    // ------------------------------
     public function evaluate() {
         $this->requireRole(['ADMIN', 'PILOTE', 'ETUDIANT']);
         
@@ -121,23 +146,18 @@ class CompanyController extends BaseController {
             $rating = $_POST['rating'] ?? '';
             $comments = $_POST['comments'] ?? '';
             
-            // Instancier le modèle Evaluation
             require_once "app/Models/Evaluation.php";
             $evaluationModel = new Evaluation($this->db);
             
-            // Vérifier si l'utilisateur a déjà évalué cette entreprise
             $existingEvaluation = $evaluationModel->exists($_SESSION['user']['user_id'], $company_id);
             
             if ($existingEvaluation) {
-                // Mettre à jour l'évaluation existante
                 $result = $evaluationModel->update($existingEvaluation['evaluation_id'], $rating, $comments);
             } else {
-                // Créer une nouvelle évaluation
                 $result = $evaluationModel->create($_SESSION['user']['user_id'], $company_id, $rating, $comments);
             }
             
             if ($result) {
-                // Mettre à jour la moyenne des évaluations de l'entreprise
                 require_once "app/Models/Company.php";
                 $companyModel = new Company($this->db);
                 $companyModel->updateAverageRating($company_id);
@@ -148,16 +168,10 @@ class CompanyController extends BaseController {
                 $error = "Erreur lors de l'évaluation.";
             }
         }
-        // En cas d'accès direct, rediriger
         header("Location: index.php?controller=company&action=show&id=" . ($_POST['company_id'] ?? ''));
         exit;
     }
     
-    // ------------------------------
-    // Méthode requireRole()
-    // Cette méthode est utilisée pour vérifier que l'utilisateur a un rôle autorisé.
-    // Elle est généralement définie dans BaseController, mais peut être redéfinie ici si besoin.
-    // ------------------------------
     protected function requireRole(array $allowedRoles) {
         if (!isset($_SESSION['user']) || !in_array(strtoupper($_SESSION['user']['role']), array_map('strtoupper', $allowedRoles))) {
             header("Location: index.php?controller=error&action=forbidden");
@@ -165,3 +179,4 @@ class CompanyController extends BaseController {
         }
     }
 }
+?>

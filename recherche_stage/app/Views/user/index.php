@@ -28,7 +28,7 @@ if ($role === 'ADMIN') {
 
 <table border="1" cellspacing="0" cellpadding="5">
   <tr>
-    <th>ID</th>
+    <!-- Colonne ID supprimée -->
     <th>Nom</th>
     <th>Email</th>
     <th>Rôle</th>
@@ -36,7 +36,7 @@ if ($role === 'ADMIN') {
   </tr>
   <?php foreach($users as $user): ?>
     <tr>
-      <td><?= htmlspecialchars($user['user_id']); ?></td>
+      <!-- La cellule affichant l'ID a été retirée -->
       <td><?= htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?></td>
       <td><?= htmlspecialchars($user['email']); ?></td>
       <td><?= htmlspecialchars($user['role']); ?></td>

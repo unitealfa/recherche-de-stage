@@ -1,3 +1,3 @@
 <?php
 
-define('BASE_URL', 'http://localhost/recherche_stage/');
+define('BASE_URL', 'http://elka_stage.org/');
