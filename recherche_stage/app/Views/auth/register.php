@@ -6,7 +6,7 @@
   <p style="color:red;"><?= htmlspecialchars($error) ?></p>
 <?php endif; ?>
 
-<form method="post" action="index.php?controller=auth&action=register">
+<form method="post" action="index.php?controller=auth&action=register" enctype="multipart/form-data">
   <label for="first_name">Prénom :</label>
   <input type="text" name="first_name" id="first_name" required>
   <br><br>
@@ -25,6 +25,10 @@
   
   <label for="confirm_password">Confirmer le mot de passe :</label>
   <input type="password" name="confirm_password" id="confirm_password" required>
+  <br><br>
+  
+  <label for="profile_picture">Photo de profil :</label>
+  <input type="file" name="profile_picture" id="profile_picture" accept="image/*">
   <br><br>
   
   <button type="submit">S'inscrire</button>

@@ -2,7 +2,7 @@
 
 <h2>Détails de l'entreprise</h2>
 <p>
-    <img class="round-pfp" src="<?= BASE_URL ?>public/uploads/companies/<?= htmlspecialchars($company['profile_picture'] ?? 'default_pfp.png'); ?>" alt="Image de <?= htmlspecialchars($company['name']); ?>" width="150">
+    <img src="<?= BASE_URL ?>public/uploads/companies/<?= htmlspecialchars($company['profile_picture'] ?? 'default_pfp.png'); ?>" alt="Image de <?= htmlspecialchars($company['name']); ?>">
 </p>
 
 <p><strong>Nom :</strong> <?= htmlspecialchars($company['name']); ?></p>

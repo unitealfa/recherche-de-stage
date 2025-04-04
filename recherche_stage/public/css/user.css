@@ -1,0 +1,218 @@
+/* ====== RESET & BASE ====== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+  body {
+    background-color: #131313;
+    color: #fff;
+    padding: 20px;
+  }
+  h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+
+  /* ====== BARRE DE RECHERCHE + BOUTON + ====== */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #323D4E;
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    color: #aaa;
+    flex: 1;
+    max-width: 400px;
+  }
+  .search-bar svg {
+    width: 18px;
+    height: 18px;
+    fill: #888;
+    margin-right: 0.5rem;
+  }
+  .search-bar input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    flex: 1;
+  }
+  .search-bar input::placeholder {
+    color: #777;
+  }
+  .add-button-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  .svg-huge-plus {
+    width: 30px;
+    height: 30px;
+    fill: #FF43DD; /* rose */
+    transition: transform 0.2s ease;
+  }
+  .svg-huge-plus:hover {
+    transform: scale(1.15);
+  }
+
+  /* ====== TABLEAU DES UTILISATEURS ====== */
+  .table-container {
+    border: 1px solid #323D4E;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #1F1F1F;
+  }
+  thead {
+    background-color: #323D4E;
+  }
+  th, td {
+    text-align: center;
+    padding: 1rem;
+    vertical-align: middle;
+  }
+  th {
+    font-weight: 600;
+    color: #ccc;
+    white-space: nowrap;
+  }
+  tbody tr {
+    border-bottom: 1px solid #000000;
+  }
+  tbody tr:hover {
+    background-color: #202020e8;
+  }
+
+  /* ====== PHOTO DE PROFIL ====== */
+  .avatar-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .user-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .user-avatar img {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+  }
+
+  /* ====== ACTIONS ====== */
+  .action-pill {
+    display: inline-flex;
+    align-items: center;
+    background-color: #2C3039;
+    border: 1.9px solid #CF63F0; /* contour violet */
+    border-radius: 0.9rem;
+    overflow: visible;
+  }
+  .action-part {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0.4rem 0.6rem;
+    border-radius: 0;
+  }
+  .action-part:hover {
+    background-color: #3A4049;
+    border-radius: 25%;
+    z-index: 5;
+  }
+  .action-part:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: -1.7px;
+    bottom: -1.6px;
+    width: 0.5px;
+    background-color: #CF63F0;
+  }
+  .action-part svg {
+    width: 20px;
+    height: 20px;
+    fill: #FF43DD; /* rose */
+    transition: transform 0.2s ease;
+  }
+  .action-part svg:hover {
+    transform: scale(1.1);
+  }
+  /* TOOLTIP */
+  .action-part .tooltip {
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 10px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+  }
+  .action-part:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+  }
+
+
+
+  /* ====== PAGINATION ====== */
+.pagination {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+    justify-content: center; /* Centrer la pagination */
+  }
+  
+  .pagination a,
+  .pagination strong {
+    text-decoration: none;
+    color: #fff;
+    background-color: #2C3039;
+    border-radius: 5px;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid #3A4049;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+  }
+  
+  .pagination a:hover {
+    background-color: #3A4049;
+  }
+  
+  /* Bouton actif (numéro de page courant) */
+  .pagination strong {
+    color: #FF43DD; /* Rose, pour se démarquer */
+    border-color: #FF43DD;
+    background-color: #3A4049;
+  }
+  

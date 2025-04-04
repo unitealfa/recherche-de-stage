@@ -1,0 +1,262 @@
+/* =========================
+   1) RESET
+   ========================= */
+   * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    overflow-y: hidden;
+    background-color: #222;
+    font-family: sans-serif;
+  }
+  
+  /* =========================
+     2) SIDEBAR
+     ========================= */
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 60px;
+    height: 100vh;
+    background-color: #111;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+  }
+  
+  .logo img {
+    width: 40px;
+    height: auto;
+    margin-bottom: 30px;
+  }
+  
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .nav-links li {
+    position: relative;
+  }
+  
+  .nav-links li a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    text-decoration: none;
+    color: #fff;
+    position: relative;
+  }
+  
+  /* Icônes SVG en blanc */
+  .nav-links li a img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
+    transition: filter 0.3s ease;
+  }
+  
+  /* Au survol, légère variation */
+  .nav-links li a:hover img {
+    filter: brightness(0) invert(0.8);
+  }
+  
+  /* Pour le lien actif */
+  .nav-links li a.active img {
+    filter: brightness(0) invert(0.8);
+  }
+  
+  /* Tooltip : titre au survol */
+  .nav-links li a::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #000;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 0.8rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  
+  .nav-links li a:hover::after {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* =========================
+     3) TOPBAR
+     ========================= */
+  .topbar {
+    position: fixed;
+    top: 0;
+    left: 60px;
+    right: 0;
+    height: 50px;
+    background-color: #ff69b4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 999;
+  }
+  
+  .topbar-left {
+    display: flex;
+    align-items: center;
+  }
+  
+  .topbar-logo {
+    height: 40px;
+    width: auto;
+  }
+  
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  /* Switch langue */
+  .language-switch {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #000;
+    font-weight: bold;
+  }
+  
+  #language-text {
+    font-size: 0.9rem;
+  }
+  
+  #language-flag {
+    width: 40px;
+    height: auto;
+  }
+  
+  .lang-toggle {
+    background: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-left: 5px;
+    padding: 2px;
+  }
+  
+  /* Bloc utilisateur (avatar + nom + dropdown) */
+  .user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.2s ease;
+  }
+  
+  .user-info:hover {
+    transform: scale(1.05);
+  }
+  
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+  }
+  
+  .info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+  
+  .info .name {
+    font-weight: bold;
+    color: #000;
+  }
+  
+  .info .role {
+    font-size: 0.6rem;
+    color: #ffffff;
+    margin-top: 8px;
+  }
+  
+  /* Dropdown déconnexion */
+  .user-dropdown {
+    position: absolute;
+    top: 180%;
+    right: -15px;
+    background: #ff69b4;
+    color: #333;
+    padding: 8px 16px;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.95);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+  }
+  
+  .user-dropdown.show {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+  }
+  
+  .user-dropdown a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    display: block;
+    white-space: nowrap;
+    padding: 5px 0;
+    transition: transform 0.2s ease;
+  }
+  
+  .user-dropdown a:hover {
+    transform: scale(1.05);
+  }
+  
+  /* =========================
+     4) LA ZONE "content-red"
+     ========================= */
+  .content-red {
+    margin-left: 40px; /* la largeur de la sidebar */
+    margin-top: 30px;  /* la hauteur de la topbar */
+    margin-right: -20px;
+    height: calc(100vh - 50px);
+    border: 2px solid red; /* juste pour visualiser la zone */
+    box-sizing: border-box;
+    overflow: auto;
+  }
+  
+  .content-area {
+    padding: 20px;
+    /* votre mise en page ici */
+  }
+  
+  

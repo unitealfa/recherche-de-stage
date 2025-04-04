@@ -81,5 +81,22 @@ class Company {
         $stmt->execute(['%' . $name . '%']);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
+    public function getCompaniesWithLimit($limit, $offset) {
+        $stmt = $this->db->prepare("SELECT company_id, name, description, email_contact, phone_contact, profile_picture FROM companies LIMIT ? OFFSET ?");
+        $stmt->bindValue(1, (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(2, (int)$offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Obtenir le nombre total d'entreprises
+    public function getTotalCompanies() {
+        $stmt = $this->db->query("SELECT COUNT(*) as total FROM companies");
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total'];
+    }
+
 }
 ?>

@@ -1,7 +1,6 @@
 <?php
 // app/Controllers/CompanyController.php
 
-// Inclusion du contrôleur de base et du modèle Company
 require_once "app/Controllers/BaseController.php";
 require_once "app/Models/Company.php";
 
@@ -15,16 +14,32 @@ class CompanyController extends BaseController {
         }
     }
     
-    // Afficher la liste des entreprises avec option de recherche
+    // Afficher la liste des entreprises avec pagination et recherche
     public function index() {
         $companyModel = new Company($this->db);
         
-        if (isset($_GET['search']) && !empty($_GET['search'])) {
-            $search = $_GET['search'];
-            $companies = $companyModel->searchOrderByMatch($search);
+        // Récupérer le terme de recherche (optionnel)
+        $search = isset($_GET['search']) ? trim($_GET['search']) : '';
+        
+        // Configuration de la pagination : 10 entreprises par page
+        $limit = 10;
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        if ($page < 1) { $page = 1; }
+        $offset = ($page - 1) * $limit;
+        
+        if (!empty($search)) {
+            // Utiliser la méthode de recherche existante pour filtrer par nom
+            $allCompanies = $companyModel->searchOrderByMatch($search);
+            $totalCompanies = count($allCompanies);
+            // Découper le tableau pour obtenir les résultats de la page courante
+            $companies = array_slice($allCompanies, $offset, $limit);
         } else {
-            $companies = $companyModel->getAll();
+            // Récupérer les entreprises paginées directement depuis la base
+            $companies = $companyModel->getCompaniesWithLimit($limit, $offset);
+            $totalCompanies = $companyModel->getTotalCompanies();
         }
+        
+        $totalPages = ceil($totalCompanies / $limit);
         
         include "app/Views/company/index.php";
     }
@@ -41,13 +56,13 @@ class CompanyController extends BaseController {
         include "app/Views/company/show.php";
     }
     
-    // Créer, modifier et supprimer des entreprises (ADMIN et PILOTE uniquement)
+    // Créer une entreprise (accessible à ADMIN et PILOTE)
     public function create() {
         $this->requireRole(['ADMIN', 'PILOTE']);
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name          = trim($_POST['name'] ?? '');
-            $description   = trim($_POST['description'] ?? '');
+            $name = trim($_POST['name'] ?? '');
+            $description = trim($_POST['description'] ?? '');
             $email_contact = trim($_POST['email_contact'] ?? '');
             $phone_contact = trim($_POST['phone_contact'] ?? '');
             
@@ -82,9 +97,11 @@ class CompanyController extends BaseController {
         include "app/Views/company/create.php";
     }
     
+    // Modifier une entreprise (accessible à ADMIN et PILOTE)
     public function edit() {
         $this->requireRole(['ADMIN', 'PILOTE']);
         $companyModel = new Company($this->db);
+        
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'] ?? '';
             $name = trim($_POST['name'] ?? '');
@@ -127,6 +144,7 @@ class CompanyController extends BaseController {
         include "app/Views/company/edit.php";
     }
     
+    // Supprimer une entreprise (accessible à ADMIN et PILOTE)
     public function delete() {
         $this->requireRole(['ADMIN', 'PILOTE']);
         $id = $_GET['id'] ?? null;
@@ -138,6 +156,7 @@ class CompanyController extends BaseController {
         exit;
     }
     
+    // Évaluer une entreprise (accessible à ADMIN, PILOTE et ETUDIANT)
     public function evaluate() {
         $this->requireRole(['ADMIN', 'PILOTE', 'ETUDIANT']);
         
@@ -172,6 +191,7 @@ class CompanyController extends BaseController {
         exit;
     }
     
+    // Méthode de contrôle d'accès (si non déjà héritée de BaseController)
     protected function requireRole(array $allowedRoles) {
         if (!isset($_SESSION['user']) || !in_array(strtoupper($_SESSION['user']['role']), array_map('strtoupper', $allowedRoles))) {
             header("Location: index.php?controller=error&action=forbidden");

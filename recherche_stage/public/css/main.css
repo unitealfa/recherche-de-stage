@@ -1,6 +1,7 @@
-.round-pfp {
-    width: 50px;       /* Ajuste la taille selon tes besoins */
-    height: 50px;      /* Assure une hauteur identique à la largeur */
+.avatar {
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    object-fit: cover;  /* Permet de conserver le ratio de l'image sans déformation */
+    object-fit: cover;
 }
+

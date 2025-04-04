@@ -41,18 +41,16 @@ spl_autoload_register(function($class) {
     }
 });
 
-// Détermination du contrôleur et de l'action à partir des paramètres GET
-$controller = isset($_GET['controller']) ? $_GET['controller'] : 'auth';
-$action     = isset($_GET['action']) ? $_GET['action'] : 'login';
+$controller = $_GET['controller'] ?? 'auth';
+$action     = $_GET['action']     ?? 'login';
 
 $controllerName = ucfirst($controller) . "Controller";
-
 if (class_exists($controllerName)) {
     $ctrl = new $controllerName($db);
     if (method_exists($ctrl, $action)) {
         $ctrl->$action();
     } else {
-        echo "Action '$action' non trouvée dans le contrôleur '$controllerName'.";
+        echo "Action '$action' non trouvée";
     }
 } else {
     echo "Contrôleur '$controllerName' non trouvé.";
