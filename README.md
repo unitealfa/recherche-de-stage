@@ -320,6 +320,6 @@ Pour faciliter le suivi et la correction, chaque spécification est accompagnée
   - **Logique**: Intégrée dans les contrôleurs (ex. `OfferController.php`) et les vues associées.
 
 - [ ] **Bonus – Accès mobile (PWA)**  
-  **Description**: tkt
+  **Description**: avec @media dans les css
 
 
